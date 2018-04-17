@@ -19,13 +19,14 @@ class Graphic {
 public:
 	Graphic(float r, float g, float b, float linewidth);
 	Graphic() {};
+	virtual ~Graphic();
 	virtual bool detect(float, float);
 	virtual void select(float, float);	//* moveInit
 	virtual void moveInit(float, float);
 	virtual void moveUpdate(float, float);
 	virtual void moveFinish() {};
 	virtual void mouseLeftUp() {};		//* moveFinish();
-	virtual void mouseLeftDown() {};
+	virtual void mouseLeftDown(float, float) {};
 	virtual void mouseRightDown(float, float) {};   //just for polygon now
 	virtual void mouseMotion(float, float) {};
 	virtual void saveAsInfo(char*) {};
@@ -63,9 +64,11 @@ bool Graphic::detect(float gx, float gy) {
 	float y = -(gy - HEIGHT / 2) / (HEIGHT / 2);
 	if (x>minPoint[0] && x<(minPoint[0] + minEdge[0])) {
 		if (y>minPoint[1] && y<(minPoint[1] + minEdge[1])) {
+			select();
 			return true;
 		}
 	}
+	unSelect();
 	return false;
 }
 
